@@ -53,7 +53,7 @@ class AuthController extends Controller
 
 
 
-    public function enviarCodigo($user)
+    public static function enviarCodigo(User $user)
     {
         $code = random_int(100000, 999999);
 

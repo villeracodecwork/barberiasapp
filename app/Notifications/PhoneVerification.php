@@ -2,6 +2,7 @@
 
 namespace App\Notifications;
 
+use App\Notifications\Channels\HablameChannel;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 
@@ -18,7 +19,7 @@ class PhoneVerification extends Notification
 
     public function via($notifiable): array
     {
-        return ['database', \App\Notifications\Channels\HablameChannel::class];
+        return ['database', HablameChannel::class];
     }
 
     public function toHablame($notifiable): array

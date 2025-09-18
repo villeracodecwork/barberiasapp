@@ -2,84 +2,81 @@
 
 namespace App\Services;
 
+use GuzzleHttp\Client;
+use Illuminate\Http\Client\RequestException;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Throwable;
 
 class HablameSmsService
 {
+    protected Client $client;
     protected string $apiKey;
-    protected string $cliente;
-    protected string $endpointSend;
-    protected string $endpointBalance;
-    protected string $sender;
-    protected int $timeout;
+    protected bool $flash;
+    protected bool $priority;
+    protected bool $certificate;
+
 
     public function __construct()
     {
-        $this->apiKey = config('services.hablame.api');
-        $this->cliente = config('services.hablame.cliente');
-        $this->endpointSend = config('services.hablame.endpoint_send');
-        $this->endpointBalance = config('services.hablame.endpoint_balance');
-        $this->sender = config('services.hablame.sender');
-        $this->timeout = (int) config('services.hablame.timeout', 10);
+        $this->client = new Client([
+            'base_uri' => 'https://www.hablame.co/api/sms/v5/',
+            'timeout'  => 5.0,
+        ]);
+
+        $this->apiKey      = config('services.hablame.api_key');
+        $this->flash       = config('services.hablame.flash');
+        $this->priority    = config('services.hablame.priority');
+        $this->certificate = config('services.hablame.certificate');
     }
 
-    /**
-     * Enviar SMS genérico.
-     *
-     * @param string $phone Ej: 573001234567
-     * @param string $message
-     * @param string|null $reference
-     * @return array  ['success'=>bool,'status'=>int,'body'=>string,'json'=>array|null,'error'=>string|null]
-     */
-    public function send(string $phone, string $message, ?string $reference = null): array
+    public function sendSms(string $to, string $message): bool
     {
-        $payload = [
-            'cliente'    => $this->cliente,
-            'api'        => $this->apiKey,
-            'numero'     => $phone,
-            'sms'        => $message,
-            'referencia' => $reference ?? uniqid('sms_'),
-            'remitente'  => $this->sender,
-            'fecha'      => now()->format('Y-m-d H:i:s'),
-        ];
-
         try {
-            $resp = Http::asForm()
-                ->timeout($this->timeout)
-                ->post($this->endpointSend, $payload);
+            $response = $this->client->post('send', [
+                'json' => [
+                    'messages' => [
+                        [
+                            'to'   => $to,
+                            'text' => $message,
+                        ],
+                    ],
+                    'flash'       => $this->flash,
+                    'priority'    => $this->priority,
+                    'certificate' => $this->certificate,
+                    "from" => "barberiasapp",
+                    "campaignName" => "Barberias app",
 
-            $body = $resp->body();
-            $json = null;
-            try { $json = $resp->json(); } catch (Throwable $e) {}
+                ],
+                'headers' => [
+                    'accept'          => 'application/json',
+                    'content-type'    => 'application/json',
+                    'X-Hablame-Key'   => $this->apiKey,
 
-            if ($resp->successful()) {
-                return ['success' => true, 'status' => $resp->status(), 'body' => $body, 'json' => $json, 'error' => null];
-            }
+                ],
+            ]);
 
-            Log::warning('Hablame SMS send failed', ['status' => $resp->status(), 'body' => $body]);
-            return ['success' => false, 'status' => $resp->status(), 'body' => $body, 'json' => $json, 'error' => $body];
+            return $response->getStatusCode() === 200;
 
-        } catch (Throwable $e) {
-            Log::error('Hablame SMS exception', ['message' => $e->getMessage()]);
-            return ['success' => false, 'status' => 0, 'body' => null, 'json' => null, 'error' => $e->getMessage()];
+        } catch (RequestException $e) {
+            dd("fallo ",$e->getResponse()->getBody());
+            return false;
         }
     }
 
     /**
      * Enviar código de verificación OTP.
      */
-    public function sendVerificationCode(string $phone, string $code): array
+    public function sendVerificationCode(string $phone, string $code)
     {
         $message = "Tu código de verificación para BarberiasApp es: {$code}";
-        return $this->send($phone, $message, 'verif');
+        return $this->sendSms($phone, $message);
     }
 
     /**
      * Consultar saldo (si la API lo expone así).
      */
-    public function checkBalance(): array
+   /*  public function checkBalance(): array
     {
         try {
             $resp = Http::timeout($this->timeout)->get($this->endpointBalance, [
@@ -89,17 +86,19 @@ class HablameSmsService
 
             $body = $resp->body();
             $json = null;
-            try { $json = $resp->json(); } catch (Throwable $e) {}
+            try {
+                $json = $resp->json();
+            } catch (Throwable $e) {
+            }
 
             if ($resp->successful()) {
                 return ['success' => true, 'status' => $resp->status(), 'body' => $body, 'json' => $json, 'error' => null];
             }
 
             return ['success' => false, 'status' => $resp->status(), 'body' => $body, 'json' => $json, 'error' => $body];
-
         } catch (Throwable $e) {
             Log::error('Hablame checkBalance exception', ['message' => $e->getMessage()]);
             return ['success' => false, 'status' => 0, 'body' => null, 'json' => null, 'error' => $e->getMessage()];
         }
-    }
+    } */
 }

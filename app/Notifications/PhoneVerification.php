@@ -19,16 +19,12 @@ class PhoneVerification extends Notification
 
     public function via($notifiable): array
     {
-        return ['database', HablameChannel::class];
+        return ['database', 'hablame'];
     }
 
-    public function toHablame($notifiable): array
+    public function toHablame($notifiable): string
     {
-        return [
-            'to'       => $notifiable->routeNotificationForHablame(),
-            'text'     => "Tu código de verificación es: {$this->code}",
-            'reference'=> 'otp',
-        ];
+        return "Tu código de verificación para BarberiasApp es: {$this->code}";
     }
 
     public function toDatabase($notifiable): array

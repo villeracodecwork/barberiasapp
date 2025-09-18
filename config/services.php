@@ -35,12 +35,10 @@ return [
         ],
     ],
     'hablame' => [
-        'api'            => env('HABLAME_API'),         // tu api key
-        'cliente'        => env('HABLAME_CLIENTE'),     // tu cliente/cuenta
-        'endpoint_send'  => env('HABLAME_ENDPOINT_SEND', 'https://api103.hablame.co/sms/envio/'),
-        'endpoint_balance' => env('HABLAME_ENDPOINT_BALANCE', 'https://api103.hablame.co/saldo/'),
-        'sender'         => env('HABLAME_SENDER', 'BarberiasApp'),
-        'timeout'        => env('HABLAME_TIMEOUT', 10),
+        'api_key'     => env('HABLAME_API_KEY'),
+        'flash'       => filter_var(env('HABLAME_FLASH', false), FILTER_VALIDATE_BOOLEAN),
+        'priority'    => filter_var(env('HABLAME_PRIORITY', true), FILTER_VALIDATE_BOOLEAN),
+        'certificate' => filter_var(env('HABLAME_CERTIFICATE', false), FILTER_VALIDATE_BOOLEAN),
     ],
 
 ];

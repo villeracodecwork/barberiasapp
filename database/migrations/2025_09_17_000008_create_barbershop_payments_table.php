@@ -15,7 +15,7 @@ return new class extends Migration
             $table->date('payment_date');
             $table->date('end_date')->nullable();
             $table->string('payment_method',50)->nullable();
-            $table->string('status',5)->default('completed');
+            $table->string('status',5);
             $table->text('notes')->nullable();
             $table->string('plan_type',10)->nullable();
             $table->integer('plan_duration_months')->nullable();

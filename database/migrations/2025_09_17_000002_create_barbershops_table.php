@@ -12,13 +12,14 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('profile_picture')->nullable();
-            $table->foreign('municipality_code')->references('code')->on('municipalities');
+            $table->integer('municipality_code')->nullable();
             $table->decimal('latitude', 10, 7)->nullable();
             $table->decimal('longitude', 10, 7)->nullable();
             $table->string('address')->nullable();
             $table->string('phone')->nullable();
             $table->string('email')->nullable();
             $table->timestamps();
+            $table->foreign('municipality_code')->references('code')->on('municipalities');
         });
     }
 

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\PromotionType;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -27,6 +28,7 @@ class Promotion extends Model
         'start_date' => 'date',
         'end_date' => 'date',
         'value' => 'float',
+        'type' => PromotionType::class,
     ];
 
     public function barbershop()

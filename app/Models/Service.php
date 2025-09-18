@@ -4,6 +4,7 @@ namespace App\Models;
 
 
 use App\Enums\IdentificationType;
+use App\Enums\ServiceCategory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -28,6 +29,13 @@ class Service extends Model
         "profile_picture",
         "price",
         "is_active",
+    ];
+
+    protected $casts = [
+        'duration_minutes' => 'integer',
+        'price' => 'float',
+        'is_active' => 'boolean',
+        "category" => ServiceCategory::class,
     ];
 
 

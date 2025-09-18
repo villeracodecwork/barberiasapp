@@ -2,8 +2,11 @@
 
 namespace App\Models;
 
+use App\Enums\AppointmentStatus;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 
 class Appointment extends Model
@@ -34,6 +37,14 @@ class Appointment extends Model
         "end_time",
         "duration_minutes",
         "payment_method",
+    ];
+
+
+    protected $casts = [
+        'appointment_date' => 'date',
+        'canceled_at' => 'datetime',
+        'completed_at' => 'datetime',
+        "status" => AppointmentStatus::class,
     ];
 
     protected static function boot()
@@ -74,4 +85,38 @@ class Appointment extends Model
             ]);
         });
     }
+
+    /**
+     * barberia
+     */
+    public function barbershop():BelongsTo
+    {
+        return $this->belongsTo(Barbershop::class, 'barbershop_id', 'id');
+    }
+
+    /**
+     * barber
+     */
+    public function barber():BelongsTo
+    {
+        return $this->belongsTo(Barber::class, 'barber_id', 'id');
+    }
+
+    /**
+     * person
+     */
+    public function person():BelongsTo
+    {
+        return $this->belongsTo(Person::class, 'person_id', 'id');
+    }
+
+    /**
+     * service
+     */
+    public function service():BelongsTo
+    {
+        return $this->belongsTo(Service::class, 'service_id', 'id');
+    }   
+
 }
+

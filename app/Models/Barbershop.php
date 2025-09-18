@@ -6,6 +6,7 @@ namespace App\Models;
 use App\Enums\IdentificationType;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Barbershop extends Model
 {
@@ -38,5 +39,13 @@ class Barbershop extends Model
         'birth_date' => 'date',
     ];
 
-   
+
+    /**
+     * municipio
+     */
+    public function municipality(): BelongsTo
+    {
+        return $this->belongsTo(Municipality::class, 'municipality_code', 'code');
+    }
+
 }

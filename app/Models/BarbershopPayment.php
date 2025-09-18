@@ -2,6 +2,9 @@
 
 namespace App\Models;
 
+use App\Enums\PaymentStatus;
+use App\Enums\PlanType;
+use Faker\Provider\ar_EG\Payment;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -23,5 +26,10 @@ class BarbershopPayment extends Model
         'plan_duration_months',
     ];
 
-    // Relaciones, scopes, etc. pueden agregarse aquí
+    protected $casts = [
+        'payment_date' => 'datetime',
+        'end_date' => 'datetime',
+        'status' => PaymentStatus::class,
+        'plan_type' => PlanType::class,
+    ];
 }

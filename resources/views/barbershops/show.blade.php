@@ -1,4 +1,4 @@
-@extends('layout_public', ['hidden_hero' => false])
+@extends('layout_public', ['hidden_hero' => false,])
 
 
 @section('content')
@@ -26,7 +26,7 @@
             <p>{{ $barbershop->description }}</p>
         </div>
         <div class="col-md-6">
-            <img src="https://via.placeholder.com/500x300" class="img-fluid rounded" alt="Barbería">
+            <img src="{{asset('img/barberias_default.webp')}}" class="img-fluid rounded" alt="Barbería">
         </div>
     </div>
 </section>
@@ -35,33 +35,26 @@
 <section class="container my-5">
     <h2 class="mb-4">Nuestros Barberos</h2>
     <div class="row g-4">
-        <div class="col-md-4 barber-card">
-            <div class="card">
-                <img src="https://via.placeholder.com/400x200" class="card-img-top" alt="Barbero 1">
-                <div class="card-body">
-                    <h5 class="card-title">Juan Pérez</h5>
-                    <p class="card-text">Especialista en cortes modernos y afeitados clásicos.</p>
+        @foreach ($barbershop->barbers as $barber)
+            <div class="col-md-4 barber-card">
+                <div class="card h-100">
+                    <img src="{{asset('img/image_barber_default.png')}}" class="card-img-top" alt="{{ $barber->person->name }}">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ $barber->name_for_display }}</h5>
+                        <p class="card-text">{{ $barber->description }}</p>
+                    </div>
+                    {{-- edit --}}
+                    <div class="card-footer">
+                        <a href="{{ route('barberias.barberos.edit', [$barbershop, $barber]) }}" class="btn "><i class="bi bi-pencil-square"></i></a>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="col-md-4 barber-card">
-            <div class="card">
-                <img src="https://via.placeholder.com/400x200" class="card-img-top" alt="Barbero 2">
-                <div class="card-body">
-                    <h5 class="card-title">Carlos Rodríguez</h5>
-                    <p class="card-text">Experto en barba y estilizado personalizado.</p>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4 barber-card">
-            <div class="card">
-                <img src="https://via.placeholder.com/400x200" class="card-img-top" alt="Barbero 3">
-                <div class="card-body">
-                    <h5 class="card-title">Miguel Gómez</h5>
-                    <p class="card-text">Cortes clásicos y modernos, asesoramiento de estilo.</p>
-                </div>
-            </div>
-        </div>
+        @endforeach
+  
+       
+        
+
+        @include('barbers.create')
     </div>
 </section>
 

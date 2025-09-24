@@ -43,5 +43,12 @@ class Person extends Model
         'birth_date' => 'date',
     ];
 
-   
+    /**
+     * nombre completo
+     */
+    public function getFullNameAttribute(): string
+    {
+        return "{$this->name} {$this->last_name}";
+    }
+
 }

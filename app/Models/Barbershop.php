@@ -7,6 +7,7 @@ use App\Enums\IdentificationType;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Barbershop extends Model
 {
@@ -62,6 +63,14 @@ class Barbershop extends Model
     public function municipality(): BelongsTo
     {
         return $this->belongsTo(Municipality::class, 'municipality_code', 'code');
+    }
+
+    /**
+     * Relación con las barberos
+     */
+    public function barbers(): HasMany
+    {
+        return $this->hasMany(Barber::class);
     }
 
     /**

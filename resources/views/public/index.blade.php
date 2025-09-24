@@ -22,7 +22,7 @@
       let lng = position.coords.longitude;
 
       //aqui va la consulta para listar la barberias cercanas
-      fetch(`/barberias_list/${lat}/${lng}`)
+      fetch(`barberias_list/${lat}/${lng}`)
         .then(response => response.text())
         .then(html => {
           document.getElementById('barberias-list').innerHTML = html;

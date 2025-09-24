@@ -4,11 +4,16 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="csrf-token" content="{{ csrf_token() }}">
   <title>BarberíasApp</title>
   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDOSo77xMD9j_cB5n4ypk3cLOsE3cSB1O0&libraries=places">
   </script>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+
+
   <style>
     body {
       font-family: 'Montserrat', sans-serif;
@@ -181,6 +186,8 @@
       color: #fff;
     }
   </style>
+
+  <script src="{{ asset('vendor/js/utils.js') }}"></script>
 </head>
 
 <body>
@@ -188,7 +195,7 @@
   <!-- Header -->
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
     <div class="container">
-      <a class="navbar-brand" href="#">BarberíasApp @if (isset($barbershop)) {{$barbershop->name}}@endif</a>
+      <a class="navbar-brand" href="#"> @if (isset($barbershop)) {{$barbershop->name}} @else BarberíasApp @endif</a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -197,14 +204,16 @@
           <li class="nav-item"><a class="nav-link active" href="{{route('public.index')}}">Inicio</a></li>
           @if (!isset($barbershop))<li class="nav-item"><a class="nav-link" href="#populares">Populares</a></li>@endif
           <li class="nav-item"><a class="nav-link" href="#contacto">Contacto</a></li>
-          @if (!isset($barbershop))<li class="nav-item"><a class="nav-link" href="{{route('barberias.create')}}">Registra barbería</a></li>@endif
-          @if (isset($barbershop)) <li class="nav-item"><a class="nav-link" href="{{route('barberias.edit', $barbershop->id)}}">Editar barbería</a></li>@endif
+          @if (!isset($barbershop))<li class="nav-item"><a class="nav-link"
+              href="{{route('barberias.create')}}">Registra barbería</a></li>@endif
+          @if (isset($barbershop)) <li class="nav-item"><a class="nav-link"
+              href="{{route('barberias.edit', $barbershop->id)}}">Editar barbería</a></li>@endif
           <li class="nav-item"><a class="nav-link" href="#login">Autenticarse</a></li>
         </ul>
       </div>
     </div>
   </nav>
-  
+
   @if (!isset($hidden_hero))
   <!-- Hero -->
   <section class="hero">

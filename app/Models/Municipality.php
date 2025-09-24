@@ -49,6 +49,11 @@ class Municipality extends Model
         return $this->code.' - '.$this->name;
     }
 
+    public function getNameMunicipalityAttribute()
+    {
+        return $this->name.' - '.$this->department->name;
+    }
+
     public function department(): BelongsTo
     {
         return $this->belongsTo(Department::class, 'department_code', 'code');

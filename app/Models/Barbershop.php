@@ -82,6 +82,14 @@ class Barbershop extends Model
     }
 
     /**
+     * Relación con los horarios
+     */
+    public function schedules(): HasMany
+    {
+        return $this->hasMany(Schedule::class);
+    }
+
+    /**
      * crear una barberia
      * @param array $data
      * @return Barbershop

@@ -1,7 +1,10 @@
-<button type="button" class="btn btn-secondary"
-  onclick="toggleCreateBarber()">
-  Nuevo Barbero <i class="bi bi-plus-square"></i>
-</button>
+<x-form_row>
+  <div class="my-3  col-12 ">
+    <button type="button" class="btn btn-secondary w-100" onclick="toggleCreateBarber()">
+      Nuevo Barbero <i class="bi bi-plus-square"></i>
+    </button>
+  </div>
+</x-form_row>
 
 <section id="create_barber" class="container py-5 fade-in" style="display:none;">
   <h2 class="mb-4 text-center">Registrar barbero </h2>

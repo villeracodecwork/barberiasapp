@@ -43,7 +43,15 @@ class ServiceController extends Controller
             $data['profile_picture'] = basename($path);
         }
 
-        $service = $barbershop->services()->firstOrCreate($data);
+        $service = $barbershop->services()->firstOrCreate([
+            "category" => $data['category'],
+            "name" => $data['name'],
+            "description" => $data['description']??null,
+            "duration_minutes" => $data['duration_minutes']??null,
+            "profile_picture" => $data['profile_picture']??null,
+            "price" => $data['price']??null,
+            "is_active" => $data['is_active']??true,
+        ]);
 
         //asignar barberos al servicio
         if (isset($data['barber_ids'])) {
@@ -86,7 +94,7 @@ class ServiceController extends Controller
             $data['profile_picture'] = basename($path);
         }
 
-       $service->update($data);
+        $service->update($data);
 
         //asignar barberos al servicio
         if (isset($data['barber_ids'])) {
@@ -95,7 +103,7 @@ class ServiceController extends Controller
         } else {
             $service->barbers()->detach();
         }
-        
+
         return redirect()->route('barberias.show', $barbershop)
             ->with('success', 'Servicio actualizado exitosamente.');
     }

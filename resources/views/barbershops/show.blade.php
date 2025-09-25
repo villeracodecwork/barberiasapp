@@ -56,18 +56,19 @@
 
 
 
-        @include('barbers.create')
+
     </div>
+    @include('barbers.create')
 </section>
 
 <!-- Servicios -->
 {{-- "category",
-        "name",
-        "description",
-        "duration_minutes",
-        "profile_picture",
-        "price",
-        "is_active" --}}
+"name",
+"description",
+"duration_minutes",
+"profile_picture",
+"price",
+"is_active" --}}
 <section class="container my-5">
     <h2 class="mb-4">Nuestros Servicios</h2>
     <div class="row g-4">
@@ -80,7 +81,7 @@
                     <p class="fw-bold">Precio: ${{ number_format($service->price, 0, ',', '.') }}</p>
                 </div>
 
-                 {{-- edit --}}
+                {{-- edit --}}
                 <div class="card-footer">
                     <a href="{{ route('barberias.servicios.edit', [$barbershop, $service]) }}" class="btn "><i
                             class="bi bi-pencil-square"></i></a>
@@ -88,18 +89,44 @@
             </div>
         </div>
         @endforeach
-        @include('services.create')
+
     </div>
+    @include('services.create')
 </section>
 
 <!-- Horarios -->
 <section class="container my-5">
     <h2 class="mb-4">Horarios de Atención</h2>
     <ul class="list-group">
-        <li class="list-group-item">Lunes a Viernes: 8:00 AM - 7:00 PM</li>
-        <li class="list-group-item">Sábado: 9:00 AM - 5:00 PM</li>
-        <li class="list-group-item">Domingo: Cerrado</li>
+        @foreach (App\Enums\DayOfWeek::cases() as $day)
+        @php
+        // Obtener el horario del día actual
+        $schedule = $barbershop->schedules->where('day_of_week', $day)->first();
+        $srt_view = !$schedule ? 'Cerrado' : $schedule->start_time_formatted . ' - ' . $schedule->end_time_formatted;
+        @endphp
+        <li class="list-group-item"><span class="">{{ $day->description() }}: {{ $srt_view }}</span>
+            @if ($schedule)
+            <form id="delete-form-{{ $schedule->id }}"
+                action="{{ route('barberias.horarios.destroy', [$barbershop, $schedule]) }}" method="POST"
+                class="d-inline">
+                @csrf
+                @method('DELETE')
+
+                <button type="submit" class="btn  float-end"
+                    onclick="return confirm('¿Estás seguro de eliminar este horario?')">
+                    <i class="bi bi-trash"></i>
+                </button>
+
+            </form>
+            @endif
+        </li>
+        @endforeach
+
     </ul>
+
+    {{-- Botón para mostrar el formulario de nuevo horario --}}
+    @include('schedules.create')
+
 </section>
 
 <!-- Contacto -->
@@ -126,5 +153,24 @@
 {{-- <footer class="bg-dark text-white text-center py-4">
     &copy; 2025 Barbería de Luis. Todos los derechos reservados.
 </footer> --}}
+
+<script defer>
+    if ('scrollRestoration' in history) {
+    history.scrollRestoration = 'manual';
+    }
+
+    // Guardar el scroll en localStorage
+    window.addEventListener("beforeunload", () => {
+    localStorage.setItem("scrollY", window.scrollY);
+    });
+
+    // Restaurar cuando recarga
+    window.addEventListener("load", () => {
+    const y = localStorage.getItem("scrollY");
+    if (y !== null) {
+        window.scrollTo(0, y);
+    }
+    });
+</script>
 
 @endsection

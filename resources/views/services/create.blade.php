@@ -1,6 +1,10 @@
-<button type="button" class="btn btn-secondary" onclick="toggleCreateService()">
-  Nuevo Servicio <i class="bi bi-plus-square"></i>
-</button>
+<x-form_row>
+  <div class="my-3  col-12 ">
+    <button type="button" class="btn btn-secondary w-100" onclick="toggleCreateService()">
+      Nuevo Servicio <i class="bi bi-plus-square"></i>
+    </button>
+  </div>
+</x-form_row>
 
 <section id="create_service" class="container py-5 fade-in" style="display:none;">
   <h2 class="mb-4 text-center">Registrar servicio </h2>
@@ -45,7 +49,7 @@
           @foreach ($barbershop->barbers as $index => $barber)
           <x-checkbox_basic label=" {{ $barber->name_for_display }}" propGeneral="barber_ids[{{ $index }}]"
             assignedValue="{{ $barber->id }}" />
-            <br>
+          <br>
           @endforeach
         </div>
 

@@ -74,6 +74,14 @@ class Barbershop extends Model
     }
 
     /**
+     * Relación con los servicios
+     */
+    public function services(): HasMany
+    {
+        return $this->hasMany(Service::class);
+    }
+
+    /**
      * crear una barberia
      * @param array $data
      * @return Barbershop

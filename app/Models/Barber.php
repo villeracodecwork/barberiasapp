@@ -6,6 +6,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Notifications\Notifiable;
 
 class Barber extends Model
@@ -55,6 +56,13 @@ class Barber extends Model
         return $this->belongsTo(Barbershop::class, 'barbershop_id', 'id');
     }
 
+    /**
+     * The services that belong to the barber.
+     */
+    public function services(): BelongsToMany
+    {
+        return $this->belongsToMany(Service::class, 'services_barbers', 'barber_id', 'service_id');
+    }
 
     /**
      * crear barbero

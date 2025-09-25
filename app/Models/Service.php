@@ -7,6 +7,7 @@ use App\Enums\IdentificationType;
 use App\Enums\ServiceCategory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Service extends Model
 {
@@ -38,6 +39,20 @@ class Service extends Model
         "category" => ServiceCategory::class,
     ];
 
+    /**
+     * Get the barbershop that owns the service.
+     */
+    public function barbershop()
+    {
+        return $this->belongsTo(Barbershop::class);
+    }
 
-   
+    /**
+     * The barbers that belong to the service.
+     */
+    public function barbers(): BelongsToMany
+    {
+        return $this->belongsToMany(Barber::class, 'services_barbers', 'service_id', 'barber_id');
+    }
+
 }

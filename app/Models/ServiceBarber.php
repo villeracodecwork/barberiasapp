@@ -22,6 +22,20 @@ class ServiceBarber extends Model
         "barber_id",
     ];
 
+    /**
+     * Get the service that owns the ServiceBarber.
+     */
+    public function service()
+    {
+        return $this->belongsTo(Service::class);
+    }
 
-   
+    /**
+     * Get the barber that owns the ServiceBarber.
+     */
+    public function barber()
+    {
+        return $this->belongsTo(Barber::class);
+    }
+
 }

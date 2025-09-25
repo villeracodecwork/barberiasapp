@@ -17,10 +17,10 @@ enum ServiceCategory: string implements OptionsEnumInterface
     public function description(): string
     {
         return match($this) {
-            self::Haircut => 'Corte',
-            self::Beard => 'Barba',
-            self::Color => 'Color',
-            self::Other => 'Otro',
+            self::Haircut => 'Cortes',
+            self::Beard => 'Barbas',
+            self::Color => 'Colores',
+            self::Other => 'Otros',
         };
     }
 }

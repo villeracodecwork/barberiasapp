@@ -89,7 +89,7 @@ class BarbershopController extends Controller
      */
     public function show(Barbershop $barbershop)
     {
-        $barbershop->loadMissing('barbers.person');
+        $barbershop->loadMissing(['barbers.person', 'services']);
         return view('barbershops.show', compact('barbershop'));
     }
 

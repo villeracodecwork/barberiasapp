@@ -89,11 +89,6 @@
     form.style.display = (form.style.display === 'none' || form.style.display === '') 
       ? 'block' 
       : 'none';
-  }function toggleCreateBarber() {
-    const form = document.getElementById('create_barber');
-    form.style.display = (form.style.display === 'none' || form.style.display === '') 
-      ? 'block' 
-      : 'none';
   }
 </script>
 

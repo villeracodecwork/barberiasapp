@@ -36,59 +36,59 @@
     <h2 class="mb-4">Nuestros Barberos</h2>
     <div class="row g-4">
         @foreach ($barbershop->barbers as $barber)
-            <div class="col-md-4 barber-card">
-                <div class="card h-100">
-                    <img src="{{asset('img/image_barber_default.png')}}" class="card-img-top" alt="{{ $barber->person->name }}">
-                    <div class="card-body">
-                        <h5 class="card-title">{{ $barber->name_for_display }}</h5>
-                        <p class="card-text">{{ $barber->description }}</p>
-                    </div>
-                    {{-- edit --}}
-                    <div class="card-footer">
-                        <a href="{{ route('barberias.barberos.edit', [$barbershop, $barber]) }}" class="btn "><i class="bi bi-pencil-square"></i></a>
-                    </div>
+        <div class="col-md-4 barber-card">
+            <div class="card h-100">
+                <img src="{{asset('img/image_barber_default.png')}}" class="card-img-top"
+                    alt="{{ $barber->person->name }}">
+                <div class="card-body">
+                    <h5 class="card-title">{{ $barber->name_for_display }}</h5>
+                    <p class="card-text">{{ $barber->description }}</p>
+                </div>
+                {{-- edit --}}
+                <div class="card-footer">
+                    <a href="{{ route('barberias.barberos.edit', [$barbershop, $barber]) }}" class="btn "><i
+                            class="bi bi-pencil-square"></i></a>
                 </div>
             </div>
+        </div>
         @endforeach
-  
-       
-        
+
+
+
 
         @include('barbers.create')
     </div>
 </section>
 
 <!-- Servicios -->
+{{-- "category",
+        "name",
+        "description",
+        "duration_minutes",
+        "profile_picture",
+        "price",
+        "is_active" --}}
 <section class="container my-5">
     <h2 class="mb-4">Nuestros Servicios</h2>
     <div class="row g-4">
+        @foreach ($barbershop->services as $service)
         <div class="col-md-4">
             <div class="card service-card">
                 <div class="card-body">
-                    <h5 class="card-title">Corte de cabello</h5>
-                    <p class="card-text">Cortes personalizados según tu estilo y preferencias.</p>
-                    <p class="fw-bold">Precio: $20.000</p>
+                    <h5 class="card-title">{{ $service->name }} - {{ $service->category?->description() }}</h5>
+                    <p class="card-text">{{ $service->description }}</p>
+                    <p class="fw-bold">Precio: ${{ number_format($service->price, 0, ',', '.') }}</p>
+                </div>
+
+                 {{-- edit --}}
+                <div class="card-footer">
+                    <a href="{{ route('barberias.servicios.edit', [$barbershop, $service]) }}" class="btn "><i
+                            class="bi bi-pencil-square"></i></a>
                 </div>
             </div>
         </div>
-        <div class="col-md-4">
-            <div class="card service-card">
-                <div class="card-body">
-                    <h5 class="card-title">Afeitado clásico</h5>
-                    <p class="card-text">Afeitado profesional con toalla caliente y crema premium.</p>
-                    <p class="fw-bold">Precio: $15.000</p>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="card service-card">
-                <div class="card-body">
-                    <h5 class="card-title">Barba y estilizado</h5>
-                    <p class="card-text">Recorte y diseño de barba según tu estilo personal.</p>
-                    <p class="fw-bold">Precio: $18.000</p>
-                </div>
-            </div>
-        </div>
+        @endforeach
+        @include('services.create')
     </div>
 </section>
 
